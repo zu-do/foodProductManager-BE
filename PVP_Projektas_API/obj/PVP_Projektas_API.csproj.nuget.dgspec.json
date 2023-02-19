@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\rokis\\OneDrive - Kaunas University of Technology\\6 semestras\\PVP\\BE\\be-fridge\\PVP_Projektas_API\\PVP_Projektas_API.csproj": {}
+    "E:\\Users\\Namu\\Desktop\\be-fridge\\PVP_Projektas_API\\PVP_Projektas_API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\rokis\\OneDrive - Kaunas University of Technology\\6 semestras\\PVP\\BE\\be-fridge\\PVP_Projektas_API\\PVP_Projektas_API.csproj": {
+    "E:\\Users\\Namu\\Desktop\\be-fridge\\PVP_Projektas_API\\PVP_Projektas_API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rokis\\OneDrive - Kaunas University of Technology\\6 semestras\\PVP\\BE\\be-fridge\\PVP_Projektas_API\\PVP_Projektas_API.csproj",
+        "projectUniqueName": "E:\\Users\\Namu\\Desktop\\be-fridge\\PVP_Projektas_API\\PVP_Projektas_API.csproj",
         "projectName": "PVP_Projektas_API",
-        "projectPath": "C:\\Users\\rokis\\OneDrive - Kaunas University of Technology\\6 semestras\\PVP\\BE\\be-fridge\\PVP_Projektas_API\\PVP_Projektas_API.csproj",
-        "packagesPath": "C:\\Users\\rokis\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rokis\\OneDrive - Kaunas University of Technology\\6 semestras\\PVP\\BE\\be-fridge\\PVP_Projektas_API\\obj\\",
+        "projectPath": "E:\\Users\\Namu\\Desktop\\be-fridge\\PVP_Projektas_API\\PVP_Projektas_API.csproj",
+        "packagesPath": "C:\\Users\\Namu\\.nuget\\packages\\",
+        "outputPath": "E:\\Users\\Namu\\Desktop\\be-fridge\\PVP_Projektas_API\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\rokis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Namu\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -74,8 +71,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -87,7 +83,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }
