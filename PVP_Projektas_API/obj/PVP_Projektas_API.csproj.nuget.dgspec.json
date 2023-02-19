@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Users\\Namu\\Desktop\\PVP_Projektas_API\\PVP_Projektas_API.csproj": {}
+    "C:\\Users\\rokis\\OneDrive - Kaunas University of Technology\\6 semestras\\PVP\\BE\\be-fridge\\PVP_Projektas_API\\PVP_Projektas_API.csproj": {}
   },
   "projects": {
-    "E:\\Users\\Namu\\Desktop\\PVP_Projektas_API\\PVP_Projektas_API.csproj": {
+    "C:\\Users\\rokis\\OneDrive - Kaunas University of Technology\\6 semestras\\PVP\\BE\\be-fridge\\PVP_Projektas_API\\PVP_Projektas_API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Users\\Namu\\Desktop\\PVP_Projektas_API\\PVP_Projektas_API.csproj",
+        "projectUniqueName": "C:\\Users\\rokis\\OneDrive - Kaunas University of Technology\\6 semestras\\PVP\\BE\\be-fridge\\PVP_Projektas_API\\PVP_Projektas_API.csproj",
         "projectName": "PVP_Projektas_API",
-        "projectPath": "E:\\Users\\Namu\\Desktop\\PVP_Projektas_API\\PVP_Projektas_API.csproj",
-        "packagesPath": "C:\\Users\\Namu\\.nuget\\packages\\",
-        "outputPath": "E:\\Users\\Namu\\Desktop\\PVP_Projektas_API\\obj\\",
+        "projectPath": "C:\\Users\\rokis\\OneDrive - Kaunas University of Technology\\6 semestras\\PVP\\BE\\be-fridge\\PVP_Projektas_API\\PVP_Projektas_API.csproj",
+        "packagesPath": "C:\\Users\\rokis\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\rokis\\OneDrive - Kaunas University of Technology\\6 semestras\\PVP\\BE\\be-fridge\\PVP_Projektas_API\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Namu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\rokis\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -40,6 +43,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.3, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -67,7 +74,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -79,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }
