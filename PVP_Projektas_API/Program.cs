@@ -32,14 +32,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-using ProjectDbContext dbContext = new ProjectDbContext();
-
-User user = new User()
-{
-    Id = 0,
-    Name = "test",
-    Lastname = "testt"
-};
-
-dbContext.Add(user);
