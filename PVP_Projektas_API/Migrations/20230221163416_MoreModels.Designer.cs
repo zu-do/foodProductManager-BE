@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PVP_Projektas_API.Data;
 
@@ -11,9 +12,11 @@ using PVP_Projektas_API.Data;
 namespace PVP_Projektas_API.Migrations
 {
     [DbContext(typeof(ProjectDbContext))]
-    partial class ProjectDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230221163416_MoreModels")]
+    partial class MoreModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,30 +32,7 @@ namespace PVP_Projektas_API.Migrations
 
                     b.HasKey("CategoryName");
 
-                    b.ToTable("DbCategories");
-                });
-
-            modelBuilder.Entity("PVP_Projektas_API.Models.GiveawaySpot", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ClosingHours")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("OpeningHours")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DbGiveawaySpots");
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("PVP_Projektas_API.Models.Product", b =>
@@ -67,7 +47,6 @@ namespace PVP_Projektas_API.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ProductCategoryCategoryName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProductDescription")
@@ -86,7 +65,7 @@ namespace PVP_Projektas_API.Migrations
 
                     b.HasIndex("ShelfId");
 
-                    b.ToTable("DbProducts");
+                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("PVP_Projektas_API.Models.Shelf", b =>
@@ -99,7 +78,7 @@ namespace PVP_Projektas_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DbShelves");
+                    b.ToTable("Shelf");
                 });
 
             modelBuilder.Entity("PVP_Projektas_API.Models.User", b =>
@@ -132,9 +111,7 @@ namespace PVP_Projektas_API.Migrations
                 {
                     b.HasOne("PVP_Projektas_API.Models.Category", "ProductCategory")
                         .WithMany()
-                        .HasForeignKey("ProductCategoryCategoryName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductCategoryCategoryName");
 
                     b.HasOne("PVP_Projektas_API.Models.Shelf", null)
                         .WithMany("Products")
