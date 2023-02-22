@@ -17,35 +17,24 @@ namespace PVP_Projektas_API.Migrations
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Product_Category_ProductCategoryCategoryName",
-                table: "Product");
+                table: "DbProducts");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Product_Shelf_ShelfId",
-                table: "Product");
+                table: "DbProducts");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_Shelf",
-                table: "Shelf");
+                table: "DbShelves");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_Product",
-                table: "Product");
+                table: "DbProducts");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_Category",
-                table: "Category");
+                table: "DbCategories");
 
-            migrationBuilder.RenameTable(
-                name: "Shelf",
-                newName: "DbShelves");
-
-            migrationBuilder.RenameTable(
-                name: "Product",
-                newName: "DbProducts");
-
-            migrationBuilder.RenameTable(
-                name: "Category",
-                newName: "DbCategories");
 
             migrationBuilder.RenameIndex(
                 name: "IX_Product_ShelfId",

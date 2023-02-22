@@ -57,12 +57,12 @@ namespace PVP_Projektas_API.Migrations
                     table.ForeignKey(
                         name: "FK_Product_Category_ProductCategoryCategoryName",
                         column: x => x.ProductCategoryCategoryName,
-                        principalTable: "Category",
+                        principalTable: "DbCategories",
                         principalColumn: "CategoryName");
                     table.ForeignKey(
                         name: "FK_Product_Shelf_ShelfId",
                         column: x => x.ShelfId,
-                        principalTable: "Shelf",
+                        principalTable: "DbShelves",
                         principalColumn: "Id");
                 });
 
@@ -85,7 +85,7 @@ namespace PVP_Projektas_API.Migrations
                 name: "FK_DbUsers_Shelf_ShelfId",
                 table: "DbUsers",
                 column: "ShelfId",
-                principalTable: "Shelf",
+                principalTable: "DbShelves",
                 principalColumn: "Id");
         }
 
