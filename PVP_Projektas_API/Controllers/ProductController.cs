@@ -33,5 +33,15 @@ namespace PVP_Projektas_API.Controllers
                 })
                 .ToListAsync());
         }
+        [HttpDelete("delete")]
+        public async Task<ActionResult<Product>> Delete(int? id)
+        {
+            var product=_dbContext.DbProducts.FirstOrDefault(_dbContext => _dbContext.Id == id);
+            _dbContext.DbProducts.Remove(product);
+            _dbContext.SaveChangesAsync();
+            return Ok();
+
+        }
     }
+    
 }
