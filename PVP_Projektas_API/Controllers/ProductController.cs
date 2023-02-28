@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PVP_Projektas_API.Data;
+using PVP_Projektas_API.Interfaces;
 using PVP_Projektas_API.Models;
-using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,27 +10,29 @@ namespace PVP_Projektas_API.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly ProjectDbContext _dbContext;
+        private readonly IProductRepository _productRepository;
 
-        public ProductController(ProjectDbContext dbContext)
+        public ProductController(IProductRepository productRepository)
         {
-            _dbContext = dbContext;
+            _productRepository = productRepository;
         }
 
-        [HttpGet("products")]
-        public async Task<ActionResult<Product>> Get()
+        [HttpGet("getAll")]
+        public async Task<List<Product>> GetAllProducts()
         {
-            return Ok(await _dbContext.DbProducts
-                .Include(it => it.ProductCategory)
-                .Select(it => new
-                {
-                    id = it.Id,
-                    name = it.ProductName,
-                    category = it.ProductCategory.CategoryName,
-                    description = it.ProductDescription,
-                    expiration = it.ExpirationTime,
-                })
-                .ToListAsync());
+            return await _productRepository.GetAllProducts();
         }
+
+        [HttpDelete("delete")]
+        public async Task<List<Product>?> DeleteProduct([FromBody] int id) => await _productRepository.DeleteProduct(id);
+
+        [HttpPut("update")]
+        public async Task<List<Product>?> UpdateProduct(Product product) => await _productRepository.UpdateProductAsync(product);
+
+        [HttpPost("create")]
+        public async Task<List<Product>?> AddProductAsync(Product product) => await _productRepository.AddProductAsync(product);
+
+        [HttpPost("GetProductById")]
+        public async Task<Product> AddProductAsync([FromBody] int id) => await _productRepository.GetProductById(id);
     }
 }

@@ -1,4 +1,5 @@
 ﻿#nullable enable
+
 namespace PVP_Projektas_API.Models;
 
 public class User

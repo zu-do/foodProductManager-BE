@@ -3,12 +3,12 @@ using PVP_Projektas_API.Models;
 
 namespace PVP_Projektas_API.Data;
 
-public class ProjectDbContext: DbContext
+public class ProjectDbContext : DbContext
 {
     public ProjectDbContext(DbContextOptions options) : base(options)
     {
-
     }
+
     public DbSet<User> DbUsers { get; set; } = null!;
     public DbSet<Product> DbProducts { get; set; } = null!;
     public DbSet<Category> DbCategories { get; set; } = null!;

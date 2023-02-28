@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -34,7 +33,6 @@ namespace PVP_Projektas_API.Migrations
             migrationBuilder.DropPrimaryKey(
                 name: "PK_Category",
                 table: "DbCategories");
-
 
             migrationBuilder.RenameIndex(
                 name: "IX_Product_ShelfId",

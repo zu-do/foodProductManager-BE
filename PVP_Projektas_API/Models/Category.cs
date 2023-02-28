@@ -1,7 +1,9 @@
 ﻿#nullable enable
+
 using Microsoft.EntityFrameworkCore;
 
 namespace PVP_Projektas_API.Models;
+
 /// <summary>
 /// Food category (type f.e. diary, meat and so on)
 /// </summary>
