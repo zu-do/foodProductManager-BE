@@ -8,5 +8,6 @@ namespace PVP_Projektas_API.Models;
 public class Shelf
 {
     public int Id { get; set; }
+    public string Name { get; set; } = null!;
     public List<Product>? Products { get; set; }
 }
