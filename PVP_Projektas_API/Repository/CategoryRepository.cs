@@ -28,5 +28,17 @@ namespace PVP_Projektas_API.Repository
             await _dbContext.SaveChangesAsync();
             return category;
         }
+
+        public async Task<List<Category>?> DeleteCategory(string name)
+        {
+            var category = await _dbContext.DbCategories.FindAsync(name);
+            if (category == null)
+                return null;
+
+            _dbContext.DbCategories.Remove(category);
+            await _dbContext.SaveChangesAsync();
+
+            return await _dbContext.DbCategories.ToListAsync();
+        }
     }
 }

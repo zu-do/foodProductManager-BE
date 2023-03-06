@@ -11,4 +11,7 @@ namespace PVP_Projektas_API.Models;
 public class Category
 {
     public string CategoryName { get; set; } = null!;
+
+    //Navigation properties
+    public ICollection<Product> Products { get; set; } = new List<Product>();
 }

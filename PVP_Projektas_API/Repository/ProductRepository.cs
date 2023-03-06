@@ -2,6 +2,8 @@
 using PVP_Projektas_API.Data;
 using PVP_Projektas_API.Interfaces;
 using PVP_Projektas_API.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Web.Mvc;
 
 namespace PVP_Projektas_API.Repository
 {
@@ -31,25 +33,47 @@ namespace PVP_Projektas_API.Repository
             return await _dbContext.DbProducts.ToListAsync();
         }
 
-        public async Task<List<Product>> UpdateProductAsync(Product product)
+        public async Task<List<Product>> UpdateProductAsync(CreateProductDto request, int id)
         {
-            var dbProduct = await _dbContext.DbProducts.FindAsync(product.Id);
+            var dbProduct = await _dbContext.DbProducts.FindAsync(id);
             if (dbProduct == null) return null;
 
-            dbProduct.ProductName = product.ProductName;
-            dbProduct.ProductCategory.CategoryName = product.ProductCategory.CategoryName;
-            dbProduct.ProductDescription = product.ProductDescription;
-            dbProduct.ExpirationTime = product.ExpirationTime;
+            dbProduct.ProductName = request.ProductName;
+            dbProduct.CategoryName = request.CategoryName;
+            dbProduct.ProductDescription = request.ProductDescription;
+            dbProduct.ExpirationTime = request.ExpirationTime;
 
             await _dbContext.SaveChangesAsync();
 
             return await _dbContext.DbProducts.ToListAsync();
         }
 
-        public async Task<List<Product>> AddProductAsync(Product product)
+        public async Task<List<Product>> AddProductAsync(CreateProductDto request)
         {
-            _dbContext.DbProducts.Add(product);
+            //var category = await _dbContext.DbCategories.FindAsync(request.CategoryName);
+
+            var category = await _dbContext.DbCategories
+                .Include(c => c.Products)
+                .SingleOrDefaultAsync(c => c.CategoryName == request.CategoryName);
+
+            if (category == null)
+            {
+                return null;
+            }
+            
+            var newProduct = new Product
+            {
+                ProductName = request.ProductName,
+                ProductDescription = request.ProductDescription,
+                CategoryName = request.CategoryName,
+                ExpirationTime = request.ExpirationTime,
+
+            };
+            
+            _dbContext.DbProducts.Add(newProduct);
+
             await _dbContext.SaveChangesAsync();
+
             return await _dbContext.DbProducts.ToListAsync();
         }
 
