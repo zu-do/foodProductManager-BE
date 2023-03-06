@@ -8,9 +8,9 @@ namespace PVP_Projektas_API.Interfaces
 
         Task<List<Product>?> DeleteProduct(int id);
 
-        Task<List<Product>> UpdateProductAsync(Product product);
+        Task<List<Product>> UpdateProductAsync(CreateProductDto request, int id);
 
-        Task<List<Product>> AddProductAsync(Product product);
+        Task<List<Product>> AddProductAsync(CreateProductDto request);
 
         Task<Product> GetProductById(int id);
     }

@@ -23,5 +23,8 @@ namespace PVP_Projektas_API.Controllers
         {
             return await _categoryRepository.AddCategory(name);
         }
+
+        [HttpDelete("delete")]
+        public async Task<List<Category>?> DeleteCategory([FromBody] string name) => await _categoryRepository.DeleteCategory(name);
     }
 }

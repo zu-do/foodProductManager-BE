@@ -7,5 +7,6 @@ namespace PVP_Projektas_API.Repository
         Task<List<Category>> GetAllCategories();
 
         Task<Category> AddCategory(string name);
+        Task<List<Category>?> DeleteCategory(string name);
     }
 }
