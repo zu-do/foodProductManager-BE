@@ -5,7 +5,7 @@
 namespace PVP_Projektas_API.Migrations
 {
     /// <inheritdoc />
-    public partial class updRealtionProductNCategory : Migration
+    public partial class updRealtionProductNCategories : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

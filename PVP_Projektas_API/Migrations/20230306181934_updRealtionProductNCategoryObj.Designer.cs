@@ -12,8 +12,8 @@ using PVP_Projektas_API.Data;
 namespace PVP_Projektas_API.Migrations
 {
     [DbContext(typeof(ProjectDbContext))]
-    [Migration("20230306123543_updRealtionProductNCategory")]
-    partial class updRealtionProductNCategory
+    [Migration("20230306181934_updRealtionProductNCategoryObj")]
+    partial class updRealtionProductNCategoryObj
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
