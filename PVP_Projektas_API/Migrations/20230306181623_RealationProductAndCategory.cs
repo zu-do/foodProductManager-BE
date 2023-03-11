@@ -5,12 +5,40 @@
 namespace PVP_Projektas_API.Migrations
 {
     /// <inheritdoc />
-    public partial class updRealtionProductNCategoryObj : Migration
+    public partial class RealationProductAndCategory : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_DbProducts_DbCategories_ProductCategoryCategoryName",
+                table: "DbProducts");
 
+            migrationBuilder.DropIndex(
+                name: "IX_DbProducts_ProductCategoryCategoryName",
+                table: "DbProducts");
+
+            migrationBuilder.DropColumn(
+                name: "ProductCategoryCategoryName",
+                table: "DbProducts");
+
+            migrationBuilder.AddColumn<string>(
+                name: "CategoryName",
+                table: "DbProducts",
+                type: "nvarchar(450)",
+                nullable: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DbProducts_CategoryName",
+                table: "DbProducts",
+                column: "CategoryName");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_DbProducts_DbCategories_CategoryName",
+                table: "DbProducts",
+                column: "CategoryName",
+                principalTable: "DbCategories",
+                principalColumn: "CategoryName");
         }
 
         /// <inheritdoc />
