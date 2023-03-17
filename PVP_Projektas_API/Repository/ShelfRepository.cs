@@ -1,6 +1,7 @@
 ﻿using PVP_Projektas_API.Data;
 using PVP_Projektas_API.Interfaces;
 using PVP_Projektas_API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace PVP_Projektas_API.Repository
 {
@@ -23,6 +24,11 @@ namespace PVP_Projektas_API.Repository
            await _dbContext.SaveChangesAsync();
 
             return shelf;
+        }
+
+        public async Task<List<Shelf>> GetAllShelves()
+        {
+            return await _dbContext.DbShelves.ToListAsync();
         }
     }
 }
