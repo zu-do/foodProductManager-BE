@@ -10,10 +10,12 @@ namespace PVP_Projektas_API.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IShelfRepository _shelfRepository;
-        public UserController(IUserRepository userRepository, IShelfRepository shelfRepository)
+        private readonly IAdminRepository _adminRepository;
+        public UserController(IUserRepository userRepository, IShelfRepository shelfRepository, IAdminRepository adminRepository)
         {
             _userRepository = userRepository;
-            _shelfRepository = shelfRepository; 
+            _shelfRepository = shelfRepository;
+            _adminRepository = adminRepository;
         }
 
         [HttpGet("{email}")]
@@ -48,7 +50,7 @@ namespace PVP_Projektas_API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> RegisterUser([FromBody] UserDto userDto)
         {
-            if (await _userRepository.GetUser(userDto.Email) is null)
+            if (await _userRepository.GetUser(userDto.Email) is null && await _adminRepository.GetAdmin(userDto.Email) is null)
             {
                 var shelf = await _shelfRepository.CreateDefaultShelf();
 

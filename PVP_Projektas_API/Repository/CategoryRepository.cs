@@ -2,43 +2,45 @@
 using PVP_Projektas_API.Data;
 using PVP_Projektas_API.Models;
 
-namespace PVP_Projektas_API.Repository
+namespace PVP_Projektas_API.Repository;
+
+public class CategoryRepository : ICategoryRepository
 {
-    public class CategoryRepository : ICategoryRepository
+    private readonly ProjectDbContext _dbContext;
+
+    public CategoryRepository(ProjectDbContext db)
     {
-        private readonly ProjectDbContext _dbContext;
+        _dbContext = db;
+    }
 
-        public CategoryRepository(ProjectDbContext db)
+    public async Task<List<Category>> GetAllCategories()
+    {
+        return await _dbContext.DbCategories.ToListAsync();
+    }
+
+    public async Task<Category> AddCategory(string name)
+    {
+        if (await _dbContext.DbCategories.FindAsync(name) != null)
+            return null!;
+
+        var category = new Category()
         {
-            _dbContext = db;
-        }
+            CategoryName = name
+        };
+        await _dbContext.DbCategories.AddAsync(category);
+        await _dbContext.SaveChangesAsync();
+        return category;
+    }
 
-        public async Task<List<Category>> GetAllCategories()
-        {
-            return await _dbContext.DbCategories.ToListAsync();
-        }
+    public async Task<List<Category>?> DeleteCategory(string name)
+    {
+        var category = await _dbContext.DbCategories.FindAsync(name);
+        if (category == null)
+            return null;
 
-        public async Task<Category> AddCategory(string name)
-        {
-            var category = new Category()
-            {
-                CategoryName = name
-            };
-            await _dbContext.DbCategories.AddAsync(category);
-            await _dbContext.SaveChangesAsync();
-            return category;
-        }
+        _dbContext.DbCategories.Remove(category);
+        await _dbContext.SaveChangesAsync();
 
-        public async Task<List<Category>?> DeleteCategory(string name)
-        {
-            var category = await _dbContext.DbCategories.FindAsync(name);
-            if (category == null)
-                return null;
-
-            _dbContext.DbCategories.Remove(category);
-            await _dbContext.SaveChangesAsync();
-
-            return await _dbContext.DbCategories.ToListAsync();
-        }
+        return await _dbContext.DbCategories.ToListAsync();
     }
 }
