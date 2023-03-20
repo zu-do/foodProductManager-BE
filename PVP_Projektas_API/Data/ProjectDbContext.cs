@@ -23,4 +23,5 @@ public class ProjectDbContext : DbContext
     public DbSet<Trade> DbTrades { get; set; } = null!;
     public DbSet<GiveawaySpot> DbGiveawaySpots { get; set; }
     public DbSet<Shelf> DbShelves { get; set; } = null!;
+    public DbSet<Admin> DbAdmins { get; set; } = null!;
 }

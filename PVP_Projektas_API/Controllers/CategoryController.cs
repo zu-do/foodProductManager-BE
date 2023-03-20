@@ -18,10 +18,10 @@ namespace PVP_Projektas_API.Controllers
         [HttpGet("getAll")]
         public async Task<List<Category>> GetAllCategoriesAsync() => await _categoryRepository.GetAllCategories();
 
-        [HttpPost("add")]
-        public async Task<Category> Post([FromBody] string name)
+        [HttpPost("add/{category}")]
+        public async Task<Category> Post([FromRoute] string category)
         {
-            return await _categoryRepository.AddCategory(name);
+            return await _categoryRepository.AddCategory(category);
         }
 
         [HttpDelete("delete")]

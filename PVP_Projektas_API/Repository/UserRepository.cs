@@ -33,7 +33,7 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public async Task<User> GetUser(string email)
+    public async Task<User?> GetUser(string email)
     {
         return await _dbContext.DbUsers.FirstOrDefaultAsync(u => u.Email == email);
     }
