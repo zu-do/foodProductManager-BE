@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PVP_Projektas_API.Data;
 using PVP_Projektas_API.Interfaces;
 using PVP_Projektas_API.Models;
+using System.Web.Helpers;
 
 namespace PVP_Projektas_API.Repository;
 
@@ -36,5 +37,10 @@ public class UserRepository : IUserRepository
     public async Task<User?> GetUser(string email)
     {
         return await _dbContext.DbUsers.FirstOrDefaultAsync(u => u.Email == email);
+    }
+
+    public async Task<List<User>> GetUsers()
+    {
+        return await _dbContext.DbUsers.ToListAsync();
     }
 }

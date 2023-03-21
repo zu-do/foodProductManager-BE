@@ -6,6 +6,7 @@ public interface IUserRepository
 {
         Task<User?> GetUser(string email);
         Task<User> CreateUser(UserDto user, Shelf shelf);
+        Task<List<User>> GetUsers();
 
 }    
 

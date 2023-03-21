@@ -47,6 +47,7 @@ namespace PVP_Projektas_API.Controllers
             }
             return BadRequest();
         }
+
         [HttpPost("register")]
         public async Task<ActionResult> RegisterUser([FromBody] UserDto userDto)
         {
@@ -63,6 +64,13 @@ namespace PVP_Projektas_API.Controllers
             }
             else return BadRequest();
         }
+
+        [HttpGet("users")]
+        public async Task<List<User>> GetUsers()
+        {
+            return await _userRepository.GetUsers();
+        }
+        
 
     }
 }
