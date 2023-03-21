@@ -11,5 +11,5 @@ public class User
     public string Email { get; set; } = null!;
 
     public string Password { get; set; } = null!;
-    public List<Shelf> Shelves { get; set; } = new List<Shelf>(); // user WILL have atleast one shelf
+    public ICollection<Shelf> Shelves { get; set; } = null!; // user WILL have atleast one shelf
 }

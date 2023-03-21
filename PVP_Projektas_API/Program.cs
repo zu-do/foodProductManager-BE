@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using PVP_Projektas_API.Data;
 using PVP_Projektas_API.Interfaces;
 using PVP_Projektas_API.Repository;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -19,6 +21,11 @@ builder.Services.AddTransient<IAdminRepository, AdminRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ProjectDbContext>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.MaxDepth = 10;
+});
 
 builder.Services.AddCors(cp => cp.AddPolicy("AllowAny", policy => policy
 .AllowAnyHeader()

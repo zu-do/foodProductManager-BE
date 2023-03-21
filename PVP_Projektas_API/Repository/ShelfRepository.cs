@@ -14,21 +14,23 @@ namespace PVP_Projektas_API.Repository
             _dbContext = dbContext;
         }
 
-         public async Task<Shelf> CreateDefaultShelf()
+         public async Task<Shelf> CreateDefaultShelf(User user)
         {
             var shelf = new Shelf()
             {
-                Name = "Default"
+                Name = "Default",
+                UserId = user.Id,
             };
            await _dbContext.AddAsync(shelf);
+
            await _dbContext.SaveChangesAsync();
 
-            return shelf;
+           return shelf;
         }
 
         public async Task<List<Shelf>> GetAllShelves()
         {
-            return await _dbContext.DbShelves.ToListAsync();
+            return await _dbContext.DbShelves.Include(p => p.Products).ToListAsync();
         }
     }
 }
