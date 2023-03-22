@@ -4,7 +4,7 @@ namespace PVP_Projektas_API.Interfaces
 {
     public interface IShelfRepository
     {
-        public Task<Shelf> CreateDefaultShelf();
+        public Task<Shelf> CreateDefaultShelf(User user);
         public Task<List<Shelf>> GetAllShelves();
     }
 }

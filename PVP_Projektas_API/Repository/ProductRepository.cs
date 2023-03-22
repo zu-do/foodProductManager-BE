@@ -33,7 +33,7 @@ namespace PVP_Projektas_API.Repository
             return await _dbContext.DbProducts.ToListAsync();
         }
 
-        public async Task<List<Product>> UpdateProductAsync(CreateProductDto request, int id)
+        public async Task<List<Product>> UpdateProductAsync(UpdateProductDto request, int id)
         {
             var dbProduct = await _dbContext.DbProducts.FindAsync(id);
             if (dbProduct == null) return null;
@@ -48,7 +48,7 @@ namespace PVP_Projektas_API.Repository
             return await _dbContext.DbProducts.ToListAsync();
         }
 
-        public async Task<List<Product>> AddProductAsync(CreateProductDto request)
+        public async Task<Product> AddProductAsync(CreateProductDto request)
         {
             //var category = await _dbContext.DbCategories.FindAsync(request.CategoryName);
 
@@ -72,9 +72,17 @@ namespace PVP_Projektas_API.Repository
             
             _dbContext.DbProducts.Add(newProduct);
 
+            var userShelf = await _dbContext.DbShelves.Where(sh => sh.Id == request.ShelfId).FirstOrDefaultAsync();
+
+            if (userShelf.Products == null)
+            {
+                userShelf.Products = new List<Product>();
+            }
+            userShelf?.Products!.Add(newProduct);
+
             await _dbContext.SaveChangesAsync();
 
-            return await _dbContext.DbProducts.ToListAsync();
+            return newProduct;
         }
 
         public Task<Product> GetProductById(int id)
@@ -82,6 +90,20 @@ namespace PVP_Projektas_API.Repository
             var product = _dbContext.DbProducts.First(product => product.Id == id);
 
             return Task.FromResult(product);
+        }
+
+        public async Task<List<Product>> GetUserProducts(string email, int? shelf = null)
+        {
+            if (shelf is null)
+            {
+                var user = await _dbContext.DbUsers.Where(u => u.Email == email).FirstOrDefaultAsync();
+
+                var defaultShelf = await _dbContext.DbShelves.Where(sh => sh.UserId == user.Id).OrderBy(sh => sh.Id).Include(sh => sh.Products).FirstAsync();
+
+                var products = defaultShelf?.Products?.ToList();
+                return products;
+            }
+            throw new NotImplementedException();
         }
     }
 }

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using PVP_Projektas_API.Data;
 using PVP_Projektas_API.Interfaces;
 using PVP_Projektas_API.Models;
-using System.Web.Helpers;
 
 namespace PVP_Projektas_API.Repository;
 
@@ -16,7 +15,7 @@ public class UserRepository : IUserRepository
         _dbContext = dbContext;
     }
 
-    public async Task<User> CreateUser(UserDto userDto, Shelf shelf)
+    public async Task<User> CreateUser(UserDto userDto)
     {
         var user = new User()
         {
@@ -25,10 +24,9 @@ public class UserRepository : IUserRepository
             Email = userDto.Email,
             Password = userDto.Password
         };
-        user.Shelves = new List<Shelf>();
-        user.Shelves.Add(shelf);
 
-        await _dbContext.DbUsers.AddAsync(user);
+        _dbContext.DbUsers.Add(user);
+
         await _dbContext.SaveChangesAsync();
 
         return user;
@@ -36,7 +34,12 @@ public class UserRepository : IUserRepository
 
     public async Task<User?> GetUser(string email)
     {
-        return await _dbContext.DbUsers.FirstOrDefaultAsync(u => u.Email == email);
+        return await _dbContext.DbUsers.Include(sh => sh.Shelves).FirstOrDefaultAsync(u => u.Email == email);
+    }
+
+    public Task<List<Product>> GetUserProducts(string email)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task<List<User>> GetUsers()

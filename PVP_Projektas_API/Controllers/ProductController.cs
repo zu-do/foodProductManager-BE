@@ -23,16 +23,28 @@ namespace PVP_Projektas_API.Controllers
             return await _productRepository.GetAllProducts();
         }
 
+        [HttpPost("user-products")]
+        public async Task<List<Product>> GetUserProducts([FromBody] UserProductsRequest request)
+        {
+            var email = request.Email;
+            var shelf = request.Shelf;
+            return await _productRepository.GetUserProducts(email, shelf);
+        }
+
         [HttpDelete("delete")]
         public async Task<List<Product>?> DeleteProduct([FromBody] int id) => await _productRepository.DeleteProduct(id);
 
         [HttpPut("update")]
-        public async Task<List<Product>?> UpdateProduct([FromBody] CreateProductDto request, int id) => await _productRepository.UpdateProductAsync(request, id);
+        public async Task<List<Product>?> UpdateProduct([FromBody] UpdateProductDto request, int id) => await _productRepository.UpdateProductAsync(request, id);
 
         [HttpPost("create")]
-        public async Task<List<Product>?> AddProductAsync([FromBody] CreateProductDto request) => await _productRepository.AddProductAsync(request);
+        public async Task<Product?> AddProductAsync([FromBody] CreateProductDto request) => await _productRepository.AddProductAsync(request);
 
-        [HttpPost("GetProductById")]
-        public async Task<Product> AddProductAsync([FromBody] int id) => await _productRepository.GetProductById(id);
     }
+     public class UserProductsRequest
+    {
+        public string Email { get; set; }
+        public int? Shelf { get; set; }
+    }
+
 }

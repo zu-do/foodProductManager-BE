@@ -53,9 +53,9 @@ namespace PVP_Projektas_API.Controllers
         {
             if (await _userRepository.GetUser(userDto.Email) is null && await _adminRepository.GetAdmin(userDto.Email) is null)
             {
-                var shelf = await _shelfRepository.CreateDefaultShelf();
+                var user = await _userRepository.CreateUser(userDto);
 
-                var user = await _userRepository.CreateUser(userDto, shelf);
+                await _shelfRepository.CreateDefaultShelf(user);
                 if (user == null)
                 {
                     return NotFound();
@@ -70,7 +70,13 @@ namespace PVP_Projektas_API.Controllers
         {
             return await _userRepository.GetUsers();
         }
-        
+
+        [HttpGet("products/{email}")]
+        public async Task<List<User>> GetUserProducts([FromRoute] string email)
+        {
+            throw new NotImplementedException();
+        }
+
 
     }
 }
