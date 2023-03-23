@@ -45,7 +45,7 @@ namespace PVP_Projektas_API.Controllers
 
                 return Ok(user);
             }
-            return BadRequest();
+            return Unauthorized();
         }
 
         [HttpPost("register")]
