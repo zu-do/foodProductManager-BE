@@ -6,5 +6,6 @@ namespace PVP_Projektas_API.Interfaces
     {
         public Task<Shelf> CreateDefaultShelf(User user);
         public Task<List<Shelf>> GetAllShelves();
+        public Task<bool> ChangeProductShelf(Product product, int shelfId);
     }
 }

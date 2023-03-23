@@ -35,7 +35,7 @@ namespace PVP_Projektas_API.Controllers
         public async Task<List<Product>?> DeleteProduct([FromBody] int id) => await _productRepository.DeleteProduct(id);
 
         [HttpPut("update")]
-        public async Task<List<Product>?> UpdateProduct([FromBody] UpdateProductDto request, int id) => await _productRepository.UpdateProductAsync(request, id);
+        public async Task<Product>? UpdateProduct([FromBody] UpdateProductDto request, int id) => await _productRepository.UpdateProductAsync(request, id);
 
         [HttpPost("create")]
         public async Task<Product?> AddProductAsync([FromBody] CreateProductDto request) => await _productRepository.AddProductAsync(request);

@@ -10,10 +10,12 @@ namespace PVP_Projektas_API.Repository
     public class ProductRepository : IProductRepository
     {
         private readonly ProjectDbContext _dbContext;
+        private readonly IShelfRepository _shelfRepository;
 
-        public ProductRepository(ProjectDbContext db)
+        public ProductRepository(ProjectDbContext db, IShelfRepository shelfRepository)
         {
             _dbContext = db;
+            _shelfRepository = shelfRepository;
         }
 
         public async Task<List<Product>> GetAllProducts()
@@ -33,19 +35,22 @@ namespace PVP_Projektas_API.Repository
             return await _dbContext.DbProducts.ToListAsync();
         }
 
-        public async Task<List<Product>> UpdateProductAsync(UpdateProductDto request, int id)
+        public async Task<Product> UpdateProductAsync(UpdateProductDto request, int id)
         {
             var dbProduct = await _dbContext.DbProducts.FindAsync(id);
             if (dbProduct == null) return null;
 
+           
             dbProduct.ProductName = request.ProductName;
             dbProduct.CategoryName = request.CategoryName;
             dbProduct.ProductDescription = request.ProductDescription;
             dbProduct.ExpirationTime = request.ExpirationTime;
 
+            _shelfRepository.ChangeProductShelf(dbProduct, request.ShelfId);
+
             await _dbContext.SaveChangesAsync();
 
-            return await _dbContext.DbProducts.ToListAsync();
+            return dbProduct;
         }
 
         public async Task<Product> AddProductAsync(CreateProductDto request)
