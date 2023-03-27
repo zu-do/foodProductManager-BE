@@ -44,6 +44,8 @@ public class UserRepository : IUserRepository
 
     public async Task<List<User>> GetUsers()
     {
-        return await _dbContext.DbUsers.ToListAsync();
+        return await _dbContext.DbUsers
+            .Include(it => it.Addresses)
+            .ToListAsync();
     }
 }
