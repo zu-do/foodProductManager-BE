@@ -34,7 +34,7 @@ namespace PVP_Projektas_API.Controllers
                 return NotFound();
             }
 
-            return Ok(user.Shelves);
+            return Ok(await _shelfRepository.GetUserShelves(user));
         }
     }
 }

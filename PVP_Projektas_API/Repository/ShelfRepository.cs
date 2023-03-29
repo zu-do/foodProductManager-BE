@@ -32,5 +32,10 @@ namespace PVP_Projektas_API.Repository
         {
             return await _dbContext.DbShelves.Include(p => p.Products).ToListAsync();
         }
+
+        public async Task<List<Shelf>> GetUserShelves(User user)
+        {
+            return await _dbContext.DbShelves.Include(pr => pr.Products).Where(us => us.UserId == user.Id).ToListAsync();
+        }
     }
 }
