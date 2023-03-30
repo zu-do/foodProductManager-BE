@@ -18,13 +18,43 @@ namespace PVP_Projektas_API.Repository
             return await _dbContext.DbAddresses
                 .Include(it => it.User)
                 .ToListAsync();
-;       }
+       }
 
         public async Task<Address> CreateAddress(Address request)
         {
            await _dbContext.DbAddresses.AddAsync(request);
            await _dbContext.SaveChangesAsync();
             return request;
+        }
+
+        public async Task<List<Address>?> UpdateAddress(Address request, int id)
+        {
+            var address = await  _dbContext.DbAddresses.FirstAsync(add => add.Id == id);
+            if (address == null)
+            {
+                return null;
+            }
+            address.Comment = request.Comment;
+            address.Name = request.Name;
+            address.Longitude = request.Longitude;
+            address.Latitude = request.Latitude;
+
+            await _dbContext.SaveChangesAsync();
+            return await _dbContext.DbAddresses.ToListAsync();
+        }
+
+        public async Task<List<Address>?> DeleteAddress(int id)
+        {
+            var address = await _dbContext.DbAddresses.FirstAsync(add => add.Id == id);
+            if (address == null)
+            {
+                return null;
+            } 
+
+            _dbContext.DbAddresses.Remove(address);
+            await _dbContext.SaveChangesAsync();
+
+            return await _dbContext.DbAddresses.ToListAsync();
         }
     }
 }

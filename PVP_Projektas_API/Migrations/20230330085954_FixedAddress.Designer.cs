@@ -12,8 +12,8 @@ using PVP_Projektas_API.Data;
 namespace PVP_Projektas_API.Migrations
 {
     [DbContext(typeof(ProjectDbContext))]
-    [Migration("20230327191516_AddAddress")]
-    partial class AddAddress
+    [Migration("20230330085954_FixedAddress")]
+    partial class FixedAddress
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,10 +37,10 @@ namespace PVP_Projektas_API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Latitude")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(8,6)");
 
                     b.Property<decimal>("Longitude")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(9,6)");
 
                     b.Property<string>("Name")
                         .IsRequired()

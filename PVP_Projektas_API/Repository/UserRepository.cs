@@ -34,7 +34,7 @@ public class UserRepository : IUserRepository
 
     public async Task<User?> GetUser(string email)
     {
-        return await _dbContext.DbUsers.Include(sh => sh.Shelves).FirstOrDefaultAsync(u => u.Email == email);
+        return await _dbContext.DbUsers.Include(sh => sh.Shelves).Include(add => add.Addresses).FirstOrDefaultAsync(u => u.Email == email);
     }
 
     public Task<List<Product>> GetUserProducts(string email)

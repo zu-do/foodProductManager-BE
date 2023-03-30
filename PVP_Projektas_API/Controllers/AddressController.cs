@@ -26,5 +26,17 @@ namespace PVP_Projektas_API.Controllers
         {
             return await _addressRepository.CreateAddress(address);
         }
+
+        [HttpPut("update")]
+        public async Task<List<Address>?> UpdateAddress(Address address, int id)
+        {
+            return await _addressRepository.UpdateAddress(address, id);
+        }
+
+        [HttpDelete("delete")]
+        public async Task<List<Address>?> DeleteAddress(int id)
+        {
+            return await _addressRepository.DeleteAddress(id);
+        }
     }
 }
