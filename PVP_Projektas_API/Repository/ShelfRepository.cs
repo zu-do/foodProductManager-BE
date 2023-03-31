@@ -34,7 +34,7 @@ namespace PVP_Projektas_API.Repository
         }
         public async Task<Shelf?> AddShelfAsync(string name, int userid)
         {
-            if (name == null)//|| userid == default(int))
+            if (name == null)
             {
                 throw new ArgumentNullException(nameof(name));
             }
