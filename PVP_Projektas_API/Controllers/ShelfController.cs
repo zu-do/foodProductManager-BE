@@ -36,5 +36,11 @@ namespace PVP_Projektas_API.Controllers
 
             return Ok(user.Shelves);
         }
+        [HttpPost("create/{shelfName}/{UserID}")]
+
+        public async Task<Shelf?> AddShelfAsync([FromRoute] string shelfName, [FromRoute] int UserID)
+        {
+            return await _shelfRepository.AddShelfAsync(shelfName, UserID);
+        }
     }
 }
