@@ -32,5 +32,24 @@ namespace PVP_Projektas_API.Repository
         {
             return await _dbContext.DbShelves.Include(p => p.Products).ToListAsync();
         }
+        public async Task<Shelf?> AddShelfAsync(string name, int userid)
+        {
+            if (name == null)//|| userid == default(int))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+            var shelf = new Shelf()
+            {
+                Name = name,
+                UserId = userid,
+            };
+
+            await _dbContext.AddAsync(shelf);
+            await _dbContext.SaveChangesAsync();
+
+            return shelf;
+        }
+
+
     }
 }
