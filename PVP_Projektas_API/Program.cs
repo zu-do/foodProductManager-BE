@@ -16,6 +16,7 @@ builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IShelfRepository, ShelfRepository>();
 builder.Services.AddTransient<IAdminRepository, AdminRepository>();
+builder.Services.AddTransient<IAddressRepository, AddressRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
