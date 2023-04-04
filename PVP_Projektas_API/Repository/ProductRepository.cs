@@ -18,6 +18,7 @@ namespace PVP_Projektas_API.Repository
 
         public async Task<List<Product>> GetAllProducts()
         {
+            
             return await _dbContext.DbProducts.ToListAsync();
         }
 
@@ -43,6 +44,14 @@ namespace PVP_Projektas_API.Repository
             dbProduct.ProductDescription = request.ProductDescription;
             dbProduct.ExpirationTime = request.ExpirationTime;
 
+            if(request.ShelfId != dbProduct.ShelfId)
+            {
+                var updatedShelf = await _dbContext.DbShelves.Where(sh => sh.Id == request.ShelfId).FirstOrDefaultAsync();
+                var oldShelf = await _dbContext.DbShelves.Where(sh => sh.Id == dbProduct.ShelfId).FirstOrDefaultAsync();
+                updatedShelf?.Products!.Add(dbProduct);
+                oldShelf?.Products?.Remove(dbProduct);
+            }
+
             await _dbContext.SaveChangesAsync();
 
             return await _dbContext.DbProducts.ToListAsync();
@@ -67,6 +76,7 @@ namespace PVP_Projektas_API.Repository
                 ProductDescription = request.ProductDescription,
                 CategoryName = request.CategoryName,
                 ExpirationTime = request.ExpirationTime,
+                ShelfId = request.ShelfId,
 
             };
             

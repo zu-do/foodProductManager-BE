@@ -11,6 +11,11 @@ public class Product
     public DateTime ExpirationTime { get; set; }
 
     //Navigation properties
+
+    public int ShelfId { get; set; }
+    [JsonIgnore]
+    public Shelf ProductShelf { get; set; } = null;
+
     public string CategoryName { get; set; } = null!;
     [JsonIgnore]
     public Category ProductCategory { get; set; } = null;
