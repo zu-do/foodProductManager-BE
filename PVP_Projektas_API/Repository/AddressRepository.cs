@@ -13,10 +13,11 @@ namespace PVP_Projektas_API.Repository
             _dbContext = dbContext;
         }
 
-        public async Task<List<Address>> GetAddresses()
+        public async Task<List<Address>> GetAddresses(int UserId)
         {
             return await _dbContext.DbAddresses
                 .Include(it => it.User)
+                .Where(it => it.UserId == UserId)
                 .ToListAsync();
        }
 

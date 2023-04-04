@@ -15,10 +15,10 @@ namespace PVP_Projektas_API.Controllers
             _addressRepository = addressRepository;
         }
 
-        [HttpGet("getAll")]
-        public async Task<List<Address>> GetAddresses()
+        [HttpGet("getAll/{UserId}")]
+        public async Task<List<Address>> GetAddresses([FromRoute] int UserId)
         {
-            return await _addressRepository.GetAddresses();
+            return await _addressRepository.GetAddresses(UserId);
         }
 
         [HttpPost("create")]
@@ -33,8 +33,8 @@ namespace PVP_Projektas_API.Controllers
             return await _addressRepository.UpdateAddress(address, id);
         }
 
-        [HttpDelete("delete")]
-        public async Task<List<Address>?> DeleteAddress(int id)
+        [HttpDelete("delete/{id}")]
+        public async Task<List<Address>?> DeleteAddress([FromRoute] int id)
         {
             return await _addressRepository.DeleteAddress(id);
         }
