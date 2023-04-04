@@ -19,6 +19,12 @@ public class ProjectDbContext : DbContext
             .WithMany(c => c.Products)
             .HasForeignKey(p => p.CategoryName)
             .IsRequired(false);
+
+        modelBuilder.Entity<Product>()
+            .HasOne(p => p.ProductShelf)
+            .WithMany(c => c.Products)
+            .HasForeignKey(p => p.ShelfId)
+            .IsRequired(false);
     }
     public DbSet<Trade> DbTrades { get; set; } = null!;
     public DbSet<GiveawaySpot> DbGiveawaySpots { get; set; }
