@@ -21,7 +21,7 @@ public class OpenFoodsClient : IOpenFoodsClient
 
         var product = JObject.Parse(json);
         Console.WriteLine(product);
-        var name = product["product"]["product_name"].ToString();
+        var name = product["product"]?["product_name"]?.ToString();
         var carbohydrates = product["product"]?["nutriments"]?["carbohydrates_100g"]?.ToString();
         var fat = product["product"]?["nutriments"]?["fat_100g"]?.ToString();
         var proteins = product["product"]?["nutriments"]?["proteins_100g"]?.ToString();
