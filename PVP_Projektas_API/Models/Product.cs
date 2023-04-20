@@ -9,7 +9,6 @@ public class Product
     public string ProductName { get; set; } = null!;
     public string? ProductDescription { get; set; }
     public DateTime ExpirationTime { get; set; }
-    
     public bool Givable { get; set; }
 
     //Navigation properties
