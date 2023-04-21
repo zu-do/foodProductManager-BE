@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using PVP_Projektas_API.Clients;
 using PVP_Projektas_API.Data;
 using PVP_Projektas_API.Interfaces;
 using PVP_Projektas_API.Repository;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -17,6 +16,8 @@ builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IShelfRepository, ShelfRepository>();
 builder.Services.AddTransient<IAdminRepository, AdminRepository>();
 builder.Services.AddTransient<IAddressRepository, AddressRepository>();
+
+builder.Services.AddHttpClient<IOpenFoodsClient, OpenFoodsClient>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

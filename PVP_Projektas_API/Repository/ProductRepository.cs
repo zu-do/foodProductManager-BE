@@ -77,7 +77,7 @@ namespace PVP_Projektas_API.Repository
                 CategoryName = request.CategoryName,
                 ExpirationTime = request.ExpirationTime,
                 ShelfId = request.ShelfId,
-
+                Givable = false,
             };
             
             _dbContext.DbProducts.Add(newProduct);
