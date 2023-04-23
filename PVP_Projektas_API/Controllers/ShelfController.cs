@@ -42,5 +42,15 @@ namespace PVP_Projektas_API.Controllers
         {
             return await _shelfRepository.AddShelfAsync(shelfName, UserID);
         }
+        [HttpPut("update")]
+        public async Task<List<Shelf>?> UpdateShelf([FromBody] ShelfDto update)
+        {
+            return await _shelfRepository.UpdateShelfAsync(update);
+        }
+        [HttpDelete("delete/{id}/{userid}")]
+        public async Task<List<Shelf>?> DeleteShelf([FromRoute] int id, [FromRoute] int userid)
+        {
+            return await _shelfRepository.DeleteShelf(id, userid);
+        }
     }
 }
