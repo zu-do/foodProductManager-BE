@@ -10,6 +10,7 @@ public class Product
     public string? ProductDescription { get; set; }
     public DateTime ExpirationTime { get; set; }
     public bool Givable { get; set; }
+    public decimal Quantity { get; set; }
 
     //Navigation properties
 
@@ -20,4 +21,12 @@ public class Product
     public string CategoryName { get; set; } = null!;
     [JsonIgnore]
     public Category ProductCategory { get; set; } = null;
+    public int? UnitTypeId { get; set; }
+    public UnitType? UnitType { get; set; }
+}
+public class UnitType
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public ICollection<Product>? Products { get; set; }
 }

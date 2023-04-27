@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PVP_Projektas_API.Data;
 
@@ -11,9 +12,11 @@ using PVP_Projektas_API.Data;
 namespace PVP_Projektas_API.Migrations
 {
     [DbContext(typeof(ProjectDbContext))]
-    partial class ProjectDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230422081236_AddQuantity")]
+    partial class AddQuantity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -209,23 +212,6 @@ namespace PVP_Projektas_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DbUnitTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Kg"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "L"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Vnt"
-                        });
                 });
 
             modelBuilder.Entity("PVP_Projektas_API.Models.User", b =>

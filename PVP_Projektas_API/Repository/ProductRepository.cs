@@ -36,13 +36,15 @@ namespace PVP_Projektas_API.Repository
 
         public async Task<List<Product>> UpdateProductAsync(UpdateProductDto request, int id)
         {
-            var dbProduct = await _dbContext.DbProducts.FindAsync(id);
+            var dbProduct = await _dbContext.DbProducts.FirstAsync(it => it.Id == id);
             if (dbProduct == null) return null;
 
             dbProduct.ProductName = request.ProductName;
             dbProduct.CategoryName = request.CategoryName;
             dbProduct.ProductDescription = request.ProductDescription;
             dbProduct.ExpirationTime = request.ExpirationTime;
+            dbProduct.Quantity = request.Quantity;
+            dbProduct.UnitTypeId = request.UnitTypeId;
 
             if(request.ShelfId != dbProduct.ShelfId)
             {
@@ -77,6 +79,8 @@ namespace PVP_Projektas_API.Repository
                 CategoryName = request.CategoryName,
                 ExpirationTime = request.ExpirationTime,
                 ShelfId = request.ShelfId,
+                Quantity = request.Quantity,
+                UnitTypeId = request.UnitTypeId,
                 Givable = false,
             };
             
@@ -97,7 +101,7 @@ namespace PVP_Projektas_API.Repository
 
         public Task<Product> GetProductById(int id)
         {
-            var product = _dbContext.DbProducts.First(product => product.Id == id);
+            var product = _dbContext.DbProducts.Include(ut => ut.UnitType).First(product => product.Id == id);
 
             return Task.FromResult(product);
         }

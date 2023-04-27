@@ -25,11 +25,18 @@ public class ProjectDbContext : DbContext
             .WithMany(c => c.Products)
             .HasForeignKey(p => p.ShelfId)
             .IsRequired(false);
+
+        modelBuilder.Entity<UnitType>()
+            .HasData(new UnitType { Id = 1, Name = "Kg" },
+            new UnitType { Id = 2, Name = "L" },
+            new UnitType { Id = 3, Name = "Vnt" }
+            );
     }
     public DbSet<Trade> DbTrades { get; set; } = null!;
     public DbSet<GiveawaySpot> DbGiveawaySpots { get; set; }
     public DbSet<Shelf> DbShelves { get; set; } = null!;
     public DbSet<Admin> DbAdmins { get; set; } = null!;
     public DbSet<Address> DbAddresses { get; set; } = null!;
+    public DbSet<UnitType> DbUnitTypes { get; set; } = null!;
 
 }
