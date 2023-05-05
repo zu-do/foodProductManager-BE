@@ -18,6 +18,10 @@ public class Product
     [JsonIgnore]
     public Shelf ProductShelf { get; set; } = null;
 
+    public int? AddressId { get; set; }
+    [JsonIgnore]
+    public Address? ProductAddress { get; set; } = null;
+
     public string CategoryName { get; set; } = null!;
     [JsonIgnore]
     public Category ProductCategory { get; set; } = null;
