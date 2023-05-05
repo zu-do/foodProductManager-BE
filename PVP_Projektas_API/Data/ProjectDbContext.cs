@@ -21,6 +21,12 @@ public class ProjectDbContext : DbContext
             .IsRequired(false);
 
         modelBuilder.Entity<Product>()
+            .HasOne(p => p.ProductAddress)
+            .WithMany(c => c.Products)
+            .HasForeignKey(p => p.AddressId)
+            .IsRequired(false);
+
+        modelBuilder.Entity<Product>()
             .HasOne(p => p.ProductShelf)
             .WithMany(c => c.Products)
             .HasForeignKey(p => p.ShelfId)
