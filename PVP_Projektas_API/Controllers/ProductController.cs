@@ -39,7 +39,12 @@ namespace PVP_Projektas_API.Controllers
 
         [HttpPost("create")]
         public async Task<Product?> AddProductAsync([FromBody] CreateProductDto request) => await _productRepository.AddProductAsync(request);
-
+        [HttpGet("{product}/{category}")]
+        public async Task<DateTime?> SuggestDate([FromRoute] string product, [FromRoute] string category)
+        {
+            var suggestedDate = await _productRepository.SuggestDate(product, category);
+            return suggestedDate;
+        }
     }
      public class UserProductsRequest
     {

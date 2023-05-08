@@ -27,6 +27,14 @@ public class Product
     public Category ProductCategory { get; set; } = null;
     public int? UnitTypeId { get; set; }
     public UnitType? UnitType { get; set; }
+    public int DaysUntilExpiration
+    {
+        get
+        {
+            TimeSpan timeRemaining = ExpirationTime.Date - DateTime.Today;
+            return (int)timeRemaining.TotalDays;
+        }
+    }
 }
 public class UnitType
 {

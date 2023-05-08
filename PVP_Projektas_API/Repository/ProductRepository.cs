@@ -119,5 +119,55 @@ namespace PVP_Projektas_API.Repository
             }
             throw new NotImplementedException();
         }
+
+        public Task<DateTime?> SuggestDate(string product, string category)
+        {
+            if(product == null || category == null)
+                return Task.FromResult<DateTime?>(null);
+            string[] productwords = product.Split(new string[] { "%20" }, StringSplitOptions.RemoveEmptyEntries);
+            int productwordscount= productwords.Length;
+            var categoryProducts = _dbContext.DbProducts.Where(u => u.CategoryName == category).ToList();
+            
+            List<int> ExpirationTimes = new List<int>();
+            foreach (var categoryProduct in categoryProducts)
+            {
+                int matchCount = 0;
+                int i = 0;
+                string[] Categoryproductwords = categoryProduct.ProductName.Split(new string[] { "%20" }, StringSplitOptions.RemoveEmptyEntries);
+                int categoryPwords = Categoryproductwords.Length;
+                foreach(var categoryPword in Categoryproductwords)
+                {
+                    if (string.Equals(categoryPword, productwords[i], StringComparison.OrdinalIgnoreCase))
+                        matchCount++;
+                    i++;
+                }
+                if(productwordscount < categoryPwords)
+                {
+                    if (matchCount == 0 || matchCount < productwordscount)
+                        continue;
+                    if(matchCount == productwordscount)
+                        ExpirationTimes.Add(categoryProduct.DaysUntilExpiration);
+
+                }
+                if(productwordscount >= categoryPwords)
+                {
+                    if (matchCount == 0 || matchCount < categoryPwords)
+                        continue;
+                    if (matchCount ==  categoryPwords)
+                        ExpirationTimes.Add(categoryProduct.DaysUntilExpiration);
+                }
+                //throw new NotImplementedException();
+            }
+            if (ExpirationTimes.Count > 0)
+            {
+                var averageTime = ExpirationTimes.Average();
+                DateTime suggestedDate = DateTime.Today.AddDays(averageTime);
+                return Task.FromResult<DateTime?>(suggestedDate);
+            }
+            else
+            {
+                return Task.FromResult<DateTime?>(DateTime.Today.AddDays(5));
+            }
+        }
     }
 }
