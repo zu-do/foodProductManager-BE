@@ -119,49 +119,97 @@ namespace PVP_Projektas_API.Repository
             }
             throw new NotImplementedException();
         }
+        private bool ValidateProductName(string product, string category)
+        {
+            return product == null && category == null;
+        }
+        private int CountProductWords(string product)
+        {
+            string[] productwords = product.Split(new string[] { "%20" }, StringSplitOptions.RemoveEmptyEntries);
+            int productwordscount = productwords.Length;
+            return productwordscount;
+        }
+        private List<Product> GetCategoryProducts(string category)
+        {
+            var categoryProducts = _dbContext.DbProducts.Where(u => u.CategoryName == category).ToList();
+            return categoryProducts;
+        }
+        private int CountCategoryProductsWords(Product categoryProduct)
+        {
+            string[] Categoryproductwords = categoryProduct.ProductName.Split(new string[] { "%20" }, StringSplitOptions.RemoveEmptyEntries);
+            int categoryProductwordCount = Categoryproductwords.Length;
+            return categoryProductwordCount;
+        }
+        private bool CheckWordsCount(string categoryproduct, string product)
+        {
+            return string.Equals(categoryproduct, product, StringComparison.OrdinalIgnoreCase);
+        }
+        private bool CompareMatchNumber(int productwordsCount, int categoryproductwordscount)
+        {
+            if (productwordsCount >= categoryproductwordscount)
+                return true;
+            else
+                return false;
+        }
+        private List<int> AddExpirationTime(List<int> list, int time)
+        {
+            list.Add(time);
+            return list;
+        }
+        private double GetAverageOfExpirationTime(List<int> list)
+        {
+            return list.Average();
+        }
+        private DateTime AddAverageToCurrentDate(double average)
+        {
+            DateTime suggestedDate = DateTime.Today.AddDays(average);
+            return suggestedDate;
+        }
 
         public Task<DateTime?> SuggestDate(string product, string category)
         {
-            if(product == null || category == null)
+            if(ValidateProductName(product, category))
                 return Task.FromResult<DateTime?>(null);
-            string[] productwords = product.Split(new string[] { "%20" }, StringSplitOptions.RemoveEmptyEntries);
-            int productwordscount= productwords.Length;
-            var categoryProducts = _dbContext.DbProducts.Where(u => u.CategoryName == category).ToList();
-            
+            string[] productwords = product.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            int productwordscount= CountProductWords(product);
+            var categoryProducts = GetCategoryProducts(category);
+
+
             List<int> ExpirationTimes = new List<int>();
             foreach (var categoryProduct in categoryProducts)
             {
                 int matchCount = 0;
                 int i = 0;
-                string[] Categoryproductwords = categoryProduct.ProductName.Split(new string[] { "%20" }, StringSplitOptions.RemoveEmptyEntries);
-                int categoryPwords = Categoryproductwords.Length;
-                foreach(var categoryPword in Categoryproductwords)
+                string[] Categoryproductwords = categoryProduct.ProductName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                int categoryPwords = CountCategoryProductsWords(categoryProduct);
+                foreach (var categoryPword in Categoryproductwords)
                 {
-                    if (string.Equals(categoryPword, productwords[i], StringComparison.OrdinalIgnoreCase))
+                    if (CheckWordsCount(categoryPword, productwords[i]))
                         matchCount++;
                     i++;
                 }
-                if(productwordscount < categoryPwords)
+                if( !CompareMatchNumber(productwordscount, categoryPwords))
                 {
                     if (matchCount == 0 || matchCount < productwordscount)
                         continue;
                     if(matchCount == productwordscount)
-                        ExpirationTimes.Add(categoryProduct.DaysUntilExpiration);
+                        ExpirationTimes = AddExpirationTime(ExpirationTimes, categoryProduct.DaysUntilExpiration);
 
                 }
-                if(productwordscount >= categoryPwords)
+                if(CompareMatchNumber(productwordscount, categoryPwords))
                 {
                     if (matchCount == 0 || matchCount < categoryPwords)
                         continue;
                     if (matchCount ==  categoryPwords)
-                        ExpirationTimes.Add(categoryProduct.DaysUntilExpiration);
+                        ExpirationTimes = AddExpirationTime(ExpirationTimes, categoryProduct.DaysUntilExpiration);
                 }
-                //throw new NotImplementedException();
+                
             }
             if (ExpirationTimes.Count > 0)
             {
-                var averageTime = ExpirationTimes.Average();
-                DateTime suggestedDate = DateTime.Today.AddDays(averageTime);
+                var averageTime = GetAverageOfExpirationTime(ExpirationTimes);
+                DateTime suggestedDate = AddAverageToCurrentDate(averageTime);
                 return Task.FromResult<DateTime?>(suggestedDate);
             }
             else
