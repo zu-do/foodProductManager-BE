@@ -119,52 +119,6 @@ namespace PVP_Projektas_API.Repository
             }
             throw new NotImplementedException();
         }
-        private bool ValidateProductName(string product, string category)
-        {
-            return product == null && category == null;
-        }
-        private int CountProductWords(string product)
-        {
-            string[] productwords = product.Split(new string[] { "%20" }, StringSplitOptions.RemoveEmptyEntries);
-            int productwordscount = productwords.Length;
-            return productwordscount;
-        }
-        private List<Product> GetCategoryProducts(string category)
-        {
-            var categoryProducts = _dbContext.DbProducts.Where(u => u.CategoryName == category).ToList();
-            return categoryProducts;
-        }
-        private int CountCategoryProductsWords(Product categoryProduct)
-        {
-            string[] Categoryproductwords = categoryProduct.ProductName.Split(new string[] { "%20" }, StringSplitOptions.RemoveEmptyEntries);
-            int categoryProductwordCount = Categoryproductwords.Length;
-            return categoryProductwordCount;
-        }
-        private bool CheckWordsCount(string categoryproduct, string product)
-        {
-            return string.Equals(categoryproduct, product, StringComparison.OrdinalIgnoreCase);
-        }
-        private bool CompareMatchNumber(int productwordsCount, int categoryproductwordscount)
-        {
-            if (productwordsCount >= categoryproductwordscount)
-                return true;
-            else
-                return false;
-        }
-        private List<int> AddExpirationTime(List<int> list, int time)
-        {
-            list.Add(time);
-            return list;
-        }
-        private double GetAverageOfExpirationTime(List<int> list)
-        {
-            return list.Average();
-        }
-        private DateTime AddAverageToCurrentDate(double average)
-        {
-            DateTime suggestedDate = DateTime.Today.AddDays(average);
-            return suggestedDate;
-        }
 
         public Task<DateTime?> SuggestDate(string product, string category)
         {
@@ -216,6 +170,52 @@ namespace PVP_Projektas_API.Repository
             {
                 return Task.FromResult<DateTime?>(DateTime.Today.AddDays(5));
             }
+        }
+        private bool ValidateProductName(string product, string category)
+        {
+            return product == null && category == null;
+        }
+        private int CountProductWords(string product)
+        {
+            string[] productwords = product.Split(new string[] { "%20" }, StringSplitOptions.RemoveEmptyEntries);
+            int productwordscount = productwords.Length;
+            return productwordscount;
+        }
+        private List<Product> GetCategoryProducts(string category)
+        {
+            var categoryProducts = _dbContext.DbProducts.Where(u => u.CategoryName == category).ToList();
+            return categoryProducts;
+        }
+        private int CountCategoryProductsWords(Product categoryProduct)
+        {
+            string[] Categoryproductwords = categoryProduct.ProductName.Split(new string[] { "%20" }, StringSplitOptions.RemoveEmptyEntries);
+            int categoryProductwordCount = Categoryproductwords.Length;
+            return categoryProductwordCount;
+        }
+        private bool CheckWordsCount(string categoryproduct, string product)
+        {
+            return string.Equals(categoryproduct, product, StringComparison.OrdinalIgnoreCase);
+        }
+        private bool CompareMatchNumber(int productwordsCount, int categoryproductwordscount)
+        {
+            if (productwordsCount >= categoryproductwordscount)
+                return true;
+            else
+                return false;
+        }
+        private List<int> AddExpirationTime(List<int> list, int time)
+        {
+            list.Add(time);
+            return list;
+        }
+        private double GetAverageOfExpirationTime(List<int> list)
+        {
+            return list.Average();
+        }
+        private DateTime AddAverageToCurrentDate(double average)
+        {
+            DateTime suggestedDate = DateTime.Today.AddDays(average);
+            return suggestedDate;
         }
     }
 }
