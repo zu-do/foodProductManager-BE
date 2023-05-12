@@ -101,7 +101,7 @@ namespace PVP_Projektas_API.Repository
 
         public Task<Product> GetProductById(int id)
         {
-            var product = _dbContext.DbProducts.Include(ut => ut.UnitType).First(product => product.Id == id);
+            var product = _dbContext.DbProducts.First(product => product.Id == id);
 
             return Task.FromResult(product);
         }
