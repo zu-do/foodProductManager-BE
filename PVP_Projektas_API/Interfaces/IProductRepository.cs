@@ -15,5 +15,6 @@ namespace PVP_Projektas_API.Interfaces
         Task<Product> GetProductById(int id);
 
         Task<List<Product>> GetUserProducts(string email, int? shelf = null);
+        Task<DateTime?> SuggestDate(string product, string category);
     }
 }
