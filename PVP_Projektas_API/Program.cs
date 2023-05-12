@@ -17,6 +17,7 @@ builder.Services.AddTransient<IShelfRepository, ShelfRepository>();
 builder.Services.AddTransient<IAdminRepository, AdminRepository>();
 builder.Services.AddTransient<IAddressRepository, AddressRepository>();
 builder.Services.AddTransient<IUnitTypeRepository, UnitTypeRepository>();
+builder.Services.AddTransient<IReservationRepository, ReservationRepository>();
 
 builder.Services.AddHttpClient<IOpenFoodsClient, OpenFoodsClient>();
 

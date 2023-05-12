@@ -10,6 +10,7 @@ public class Product
     public string? ProductDescription { get; set; }
     public DateTime ExpirationTime { get; set; }
     public bool Givable { get; set; }
+    public bool Reserved { get; set; }
     public decimal Quantity { get; set; }
 
     //Navigation properties

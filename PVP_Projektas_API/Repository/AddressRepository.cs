@@ -57,5 +57,11 @@ namespace PVP_Projektas_API.Repository
 
             return await _dbContext.DbAddresses.ToListAsync();
         }
+        public async Task<Address> GetAddressByID(int Id)
+        {
+            return await _dbContext.DbAddresses.FirstAsync(add => add.Id == Id);
+
+
+        }
     }
 }

@@ -119,6 +119,26 @@ namespace PVP_Projektas_API.Repository
             }
             throw new NotImplementedException();
         }
+        public async Task<List<Product>> GetGiveableProducts()
+        {
+            return await _dbContext.DbProducts.Where(pr => pr.Givable == true && pr.Reserved == false).ToListAsync();
+        }
+        
+        public async Task<int> MarkReserved(int id, int takingUserID)
+        {
+            var dbProduct = await _dbContext.DbProducts.FirstAsync(it => it.Id == id);
+            if (dbProduct == null) 
+                return -1;
+            dbProduct.Reserved= true;
+            var productsUserID = await _dbContext.DbShelves
+             .Where(s => s.Id == dbProduct.ShelfId)
+             .Select(s => s.UserId)
+             .FirstOrDefaultAsync();
+            
+            
+            await _dbContext.SaveChangesAsync();
+            return productsUserID;
+        }
 
         public Task<DateTime?> SuggestDate(string product, string category)
         {

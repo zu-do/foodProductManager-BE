@@ -11,10 +11,12 @@ namespace PVP_Projektas_API.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
+        private readonly IReservationRepository _reservationRepository;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IProductRepository productRepository, IReservationRepository reservationRepository)
         {
             _productRepository = productRepository;
+            _reservationRepository = reservationRepository;
         }
 
         [HttpGet("getAll")]
@@ -39,6 +41,22 @@ namespace PVP_Projektas_API.Controllers
 
         [HttpPost("create")]
         public async Task<Product?> AddProductAsync([FromBody] CreateProductDto request) => await _productRepository.AddProductAsync(request);
+
+        [HttpGet("getGiveable")]
+        public async Task<List<Product>?> GetGiveableProducts() => await _productRepository.GetGiveableProducts();
+
+        [HttpPut("reserve/{id}/{userid}")]
+        public async Task<Reservation> ReserveProduct([FromRoute] int id, [FromRoute] int userid)
+        {
+            if (id < 0)
+                return null;
+
+            var givinguserID = await _productRepository.MarkReserved(id, userid);
+            if (givinguserID >= 0)
+                return await _reservationRepository.Create(id, givinguserID, userid);
+
+            return null;
+        }
         [HttpGet("{product}/{category}")]
         public async Task<DateTime?> SuggestDate([FromRoute] string product, [FromRoute] string category)
         {
