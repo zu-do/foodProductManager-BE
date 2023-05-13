@@ -28,7 +28,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ProjectDbContext>(options => options.UseSqlServer(connectionString));
 
-//builder.Services.BuildServiceProvider().GetService<ProjectDbContext>().Database.Migrate();
+builder.Services.BuildServiceProvider().GetService<ProjectDbContext>().Database.Migrate();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
