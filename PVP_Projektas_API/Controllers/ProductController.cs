@@ -12,11 +12,12 @@ namespace PVP_Projektas_API.Controllers
     {
         private readonly IProductRepository _productRepository;
         private readonly IReservationRepository _reservationRepository;
-
-        public ProductController(IProductRepository productRepository, IReservationRepository reservationRepository)
+        private readonly IMailService _mailService;
+        public ProductController(IProductRepository productRepository, IReservationRepository reservationRepository, IMailService mailService)
         {
             _productRepository = productRepository;
             _reservationRepository = reservationRepository;
+            _mailService = mailService;
         }
 
         [HttpGet("getAll")]
@@ -52,9 +53,12 @@ namespace PVP_Projektas_API.Controllers
                 return null;
 
             var givinguserID = await _productRepository.MarkReserved(id, userid);
+            var product = await _productRepository.GetProductById(id);
             if (givinguserID >= 0)
+            {
+                await _mailService.SendMail("brook37@ethereal.email", "Rezervuotas produktas", $"Jūsų produktas, pavadinimu \"{product.ProductName}\", buvo rezervuotas.");
                 return await _reservationRepository.Create(id, givinguserID, userid);
-
+            }
             return null;
         }
         [HttpGet("{product}/{category}")]

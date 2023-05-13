@@ -3,6 +3,7 @@ using PVP_Projektas_API.Clients;
 using PVP_Projektas_API.Data;
 using PVP_Projektas_API.Interfaces;
 using PVP_Projektas_API.Repository;
+using PVP_Projektas_API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -18,6 +19,7 @@ builder.Services.AddTransient<IAdminRepository, AdminRepository>();
 builder.Services.AddTransient<IAddressRepository, AddressRepository>();
 builder.Services.AddTransient<IUnitTypeRepository, UnitTypeRepository>();
 builder.Services.AddTransient<IReservationRepository, ReservationRepository>();
+builder.Services.AddTransient<IMailService, MailService>();
 
 builder.Services.AddHttpClient<IOpenFoodsClient, OpenFoodsClient>();
 
