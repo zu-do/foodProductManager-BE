@@ -21,7 +21,7 @@ public class RecipesController : ControllerBase
     public async Task<ActionResult<List<Recipe>>> Get(string email)
     {
         var recipes = await _recipesClient.GetRecipes();
-        var userProducts = _userRepository.GetUserProducts(email);
+        var userProducts = await _userRepository.GetUserProducts(email);
         return Ok(recipes);
     }
 }
