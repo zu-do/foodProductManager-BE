@@ -10,11 +10,13 @@ public class RecipesController : ControllerBase
 {
     private readonly IUserRepository _userRepository;
     private readonly IRecipesClient _recipesClient;
+    private readonly IRecipesRepository _recipesRepository;
 
-    public RecipesController(IUserRepository userRepository,IRecipesClient recipesClient)
+    public RecipesController(IUserRepository userRepository,IRecipesClient recipesClient, IRecipesRepository recipesRepository)
     {
         _userRepository = userRepository;
         _recipesClient = recipesClient;
+        _recipesRepository = recipesRepository;
     }
 
     [HttpGet("email")]
@@ -22,6 +24,7 @@ public class RecipesController : ControllerBase
     {
         var recipes = await _recipesClient.GetRecipes();
         var userProducts = await _userRepository.GetUserProducts(email);
-        return Ok(recipes);
+        var fitRecipes = await _recipesRepository.RecommendRecipes(recipes, userProducts, email);
+        return Ok(fitRecipes);
     }
 }

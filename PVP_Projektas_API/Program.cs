@@ -19,7 +19,10 @@ builder.Services.AddTransient<IAdminRepository, AdminRepository>();
 builder.Services.AddTransient<IAddressRepository, AddressRepository>();
 builder.Services.AddTransient<IUnitTypeRepository, UnitTypeRepository>();
 builder.Services.AddTransient<IReservationRepository, ReservationRepository>();
+builder.Services.AddTransient<IRecipesRepository, RecipesRepository>();
 builder.Services.AddTransient<IMailService, MailService>();
+builder.Services.AddTransient<IDistanceClient, DistanceClient>();
+
 
 builder.Services.AddHttpClient<IOpenFoodsClient, OpenFoodsClient>();
 builder.Services.AddHttpClient<IRecipesClient, RecipesClient>();

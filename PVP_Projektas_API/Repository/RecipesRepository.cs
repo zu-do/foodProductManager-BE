@@ -5,10 +5,20 @@ namespace PVP_Projektas_API.Repository;
 
 public class RecipesRepository : IRecipesRepository
 {
-    public List<Recipe> RecommendRecipes(List<Recipe> recipes, List<Product> products)
+    private readonly IProductRepository _productsRepository;
+    private readonly IDistanceClient _distanceClient;
+    private readonly IUserRepository _userRepository;
+
+    public RecipesRepository(IProductRepository productsRepository, IDistanceClient distanceClient, IUserRepository userRepository)
+    {
+        _productsRepository = productsRepository;
+        _distanceClient = distanceClient;
+        _userRepository = userRepository;
+    }
+    public async Task<List<Recipe>> RecommendRecipes(List<Recipe> recipes, List<Product> products, string email)
     {
         List<Recipe> fitRecipes = new List<Recipe>();
-        var ingredients = products.Select(p => p.ProductName).ToList();
+        var user = await _userRepository.GetUser(email);
 
         foreach (var recipe in recipes)
         {
@@ -20,16 +30,55 @@ public class RecipesRepository : IRecipesRepository
                     product.ExistsInRecipe = true;
                 }
             }
-            
 
-            if (CountExisting(recipe, products) == recipe.Ingredients.Count)
+            if (CountExisting(products) == recipe.Ingredients.Count)
             {
                 fitRecipes.Add(recipe);
             }
-            else if (CountExisting(recipe, products) + 1 == recipe.Ingredients.Count)
+            else if (CountExisting(products) + 1 == recipe.Ingredients.Count) // 1 products is missing to a recipe
             {
-                var missingProduct = products.Find(p => p.ExistsInRecipe == false);
-                throw new NotImplementedException("1 is missing");
+                double distance = 5;
+                Product fititngProductInGiveAway = new Product();
+                var giveawayProducts = await GetProductsForGiveAway();
+
+                var missingProduct = CheckMissingProductInProducts(products);
+
+                if (missingProduct is null)
+                {
+                    throw new Exception("Shit happens");
+                }
+
+
+                if (giveawayProducts.Count != 0)
+                {
+                    var giveawayProductsNames = giveawayProducts.Select(p => p.ProductName).ToList();
+                    if (giveawayProductsNames.Contains(missingProduct.ProductName))
+                    {
+                        var misisngProductsInGiveAway = giveawayProducts.Where(p => p.ProductName == missingProduct.ProductName).ToList();
+
+                        if (user.Addresses is not null)
+                        {
+                           
+
+                            foreach (var productInGiveAway in misisngProductsInGiveAway)
+                            {
+                                foreach (var address in user.Addresses)
+                                {
+                                    var calculatedDistance = _distanceClient.GetDistance((double)address.Latitude, (double)address.Longitude, (double)productInGiveAway.ProductAddress.Latitude, (double)productInGiveAway.ProductAddress.Longitude);
+                                    if (calculatedDistance < distance)
+                                    {
+                                        distance = calculatedDistance;
+                                        fititngProductInGiveAway = productInGiveAway;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (distance < 2 && fititngProductInGiveAway is not null)
+                {
+                    fitRecipes.Add(recipe);
+                }
             }
         }
 
@@ -45,11 +94,11 @@ public class RecipesRepository : IRecipesRepository
         return false;
     }
 
-    private int CountExisting(Recipe recipe, List<Product> products)
+    private int CountExisting(List<Product> products)
     {
         int fiting = 0;
 
-        foreach(var product in products)
+        foreach (var product in products)
         {
             if (product.ExistsInRecipe)
             {
@@ -58,5 +107,15 @@ public class RecipesRepository : IRecipesRepository
         }
 
         return fiting;
+    }
+
+    private async Task<List<Product>> GetProductsForGiveAway()
+    {
+        return await _productsRepository.GetGiveableProducts();
+    }
+
+    private Product CheckMissingProductInProducts(List<Product> products)
+    {
+        return products.Find(p => p.ExistsInRecipe == false);
     }
 }
