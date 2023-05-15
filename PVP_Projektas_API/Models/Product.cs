@@ -11,6 +11,7 @@ public class Product
     public string? ProductDescription { get; set; }
     public DateTime ExpirationTime { get; set; }
     public bool Givable { get; set; }
+    public bool Reserved { get; set; }
     public decimal Quantity { get; set; }
 
     //Navigation properties
@@ -28,6 +29,14 @@ public class Product
     public Category ProductCategory { get; set; } = null;
     public int? UnitTypeId { get; set; }
     public UnitType? UnitType { get; set; }
+    public int DaysUntilExpiration
+    {
+        get
+        {
+            TimeSpan timeRemaining = ExpirationTime.Date - DateTime.Today;
+            return (int)timeRemaining.TotalDays;
+        }
+    }
     [NotMapped]
     public bool ExistsInRecipe { get; set; }
 }
