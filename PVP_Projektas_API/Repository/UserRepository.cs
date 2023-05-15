@@ -37,9 +37,14 @@ public class UserRepository : IUserRepository
         return await _dbContext.DbUsers.Include(sh => sh.Shelves).Include(add => add.Addresses).FirstOrDefaultAsync(u => u.Email == email);
     }
 
-    public Task<List<Product>> GetUserProducts(string email)
+    public async Task<List<Product>> GetUserProducts(string email)
     {
-        throw new NotImplementedException();
+        var userProducts = await _dbContext.DbUsers
+        .Where(u => u.Email == email)
+        .SelectMany(u => u.Shelves.SelectMany(s => s.Products))
+        .ToListAsync();
+
+        return userProducts;
     }
 
     public async Task<List<User>> GetUsers()

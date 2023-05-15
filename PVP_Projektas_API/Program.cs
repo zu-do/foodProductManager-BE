@@ -22,6 +22,7 @@ builder.Services.AddTransient<IReservationRepository, ReservationRepository>();
 builder.Services.AddTransient<IMailService, MailService>();
 
 builder.Services.AddHttpClient<IOpenFoodsClient, OpenFoodsClient>();
+builder.Services.AddHttpClient<IRecipesClient, RecipesClient>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
