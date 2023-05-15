@@ -38,5 +38,10 @@ namespace PVP_Projektas_API.Controllers
         {
             return await _addressRepository.DeleteAddress(id);
         }
+        [HttpGet("get/{Id}")]
+        public async Task<Address> GetAddressByID([FromRoute] int Id)
+        {
+            return await _addressRepository.GetAddressByID(Id);
+        }
     }
 }

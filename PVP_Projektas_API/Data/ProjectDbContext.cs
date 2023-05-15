@@ -44,5 +44,6 @@ public class ProjectDbContext : DbContext
     public DbSet<Admin> DbAdmins { get; set; } = null!;
     public DbSet<Address> DbAddresses { get; set; } = null!;
     public DbSet<UnitType> DbUnitTypes { get; set; } = null!;
+    public DbSet<Reservation> DbReservations { get; set; } = null!;
 
 }
