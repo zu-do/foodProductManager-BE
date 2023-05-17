@@ -19,5 +19,7 @@ namespace PVP_Projektas_API.Interfaces
 
         Task<List<Product>> GetGiveableProducts();
         Task<int> MarkReserved(int id, int userid);
+
+        Task<Product> ChangeState( int id, int addressId);
     }
 }
