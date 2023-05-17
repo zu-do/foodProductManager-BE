@@ -20,11 +20,16 @@ public class RecipesController : ControllerBase
     }
 
     [HttpGet("email")]
-    public async Task<ActionResult<List<Recipe>>> Get(string email)
+    public async Task<ActionResult<List<RecipeDto>>> Get(string email)
     {
         var recipes = await _recipesClient.GetRecipes();
         var userProducts = await _userRepository.GetUserProducts(email);
         var fitRecipes = await _recipesRepository.RecommendRecipes(recipes, userProducts, email);
-        return Ok(fitRecipes);
+
+        if (fitRecipes is not null)
+        {
+            return Ok(fitRecipes);
+        }
+        return NotFound();
     }
 }

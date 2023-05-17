@@ -15,9 +15,9 @@ public class RecipesRepository : IRecipesRepository
         _distanceClient = distanceClient;
         _userRepository = userRepository;
     }
-    public async Task<List<Recipe>> RecommendRecipes(List<Recipe> recipes, List<Product> products, string email)
+    public async Task<List<RecipeDto>> RecommendRecipes(List<Recipe> recipes, List<Product> products, string email)
     {
-        List<Recipe> fitRecipes = new List<Recipe>();
+        List<RecipeDto> fitRecipes = new List<RecipeDto>();
         var user = await _userRepository.GetUser(email);
 
         foreach (var recipe in recipes)
@@ -33,7 +33,8 @@ public class RecipesRepository : IRecipesRepository
 
             if (CountExisting(products) == recipe.Ingredients.Count)
             {
-                fitRecipes.Add(recipe);
+                RecipeDto dto = new RecipeDto { Recipe = recipe };
+                fitRecipes.Add(dto);
             }
             else if (CountExisting(products) + 1 == recipe.Ingredients.Count) // 1 products is missing to a recipe
             {
@@ -51,15 +52,13 @@ public class RecipesRepository : IRecipesRepository
 
                 if (giveawayProducts.Count != 0)
                 {
-                    var giveawayProductsNames = giveawayProducts.Select(p => p.ProductName).ToList();
-                    if (giveawayProductsNames.Contains(missingProduct.ProductName))
+                    var giveawayProductsNames = giveawayProducts.Select(p => p.ProductName.ToLower()).ToList();
+                    if (giveawayProductsNames.Contains(missingProduct.ProductName.ToLower()))
                     {
-                        var misisngProductsInGiveAway = giveawayProducts.Where(p => p.ProductName == missingProduct.ProductName).ToList();
+                        var misisngProductsInGiveAway = giveawayProducts.Where(p => p.ProductName.ToLower() == missingProduct.ProductName.ToLower()).ToList();
 
                         if (user.Addresses is not null)
                         {
-                           
-
                             foreach (var productInGiveAway in misisngProductsInGiveAway)
                             {
                                 foreach (var address in user.Addresses)
@@ -77,7 +76,8 @@ public class RecipesRepository : IRecipesRepository
                 }
                 if (distance < 2 && fititngProductInGiveAway is not null)
                 {
-                    fitRecipes.Add(recipe);
+                    RecipeDto dto = new RecipeDto { Recipe = recipe, Product = fititngProductInGiveAway };
+                    fitRecipes.Add(dto);
                 }
             }
         }
@@ -86,11 +86,14 @@ public class RecipesRepository : IRecipesRepository
     }
     private bool CheckIfProductContainedInRecipe(List<string> ingredients, string product)
     {
-        if (ingredients.Contains(product))
+        foreach(var ingredient in ingredients)
         {
-            return true;
-        }
+            if (ingredient.ToLower().Contains(product.ToLower()))
+            {
+                return true;
+            }
 
+        }
         return false;
     }
 
