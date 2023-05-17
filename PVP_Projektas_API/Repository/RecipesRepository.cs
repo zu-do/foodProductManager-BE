@@ -25,7 +25,7 @@ public class RecipesRepository : IRecipesRepository
             foreach (var product in products)
             {
                 product.ExistsInRecipe = false;
-                if (CheckIfProductContainedInRecipe(recipe.Ingredients, product.ProductName))
+                if (product.Reserved is false && product.Givable is false && CheckIfProductContainedInRecipe(recipe.Ingredients, product.ProductName))
                 {
                     product.ExistsInRecipe = true;
                 }
@@ -42,7 +42,7 @@ public class RecipesRepository : IRecipesRepository
                 Product fititngProductInGiveAway = new Product();
                 var giveawayProducts = await GetProductsForGiveAway();
 
-                var missingProduct = CheckMissingProductInProducts(products);
+                var missingProduct = CheckMissingProductInProducts(products, recipe);
 
                 if (missingProduct is null)
                 {
@@ -53,9 +53,9 @@ public class RecipesRepository : IRecipesRepository
                 if (giveawayProducts.Count != 0)
                 {
                     var giveawayProductsNames = giveawayProducts.Select(p => p.ProductName.ToLower()).ToList();
-                    if (giveawayProductsNames.Contains(missingProduct.ProductName.ToLower()))
+                    if (giveawayProductsNames.Contains(missingProduct.ToLower()))
                     {
-                        var misisngProductsInGiveAway = giveawayProducts.Where(p => p.ProductName.ToLower() == missingProduct.ProductName.ToLower()).ToList();
+                        var misisngProductsInGiveAway = giveawayProducts.Where(p => p.ProductName.ToLower() == missingProduct.ToLower()).ToList();
 
                         if (user.Addresses is not null)
                         {
@@ -117,8 +117,8 @@ public class RecipesRepository : IRecipesRepository
         return await _productsRepository.GetGiveableProducts();
     }
 
-    private Product CheckMissingProductInProducts(List<Product> products)
+    private string CheckMissingProductInProducts(List<Product> products, Recipe recipe)
     {
-        return products.Find(p => p.ExistsInRecipe == false);
+        return recipe.Ingredients.Where(i => !products.Any(p => p.ExistsInRecipe && i.ToLower().Contains(p.ProductName.ToLower()))).Single();
     }
 }

@@ -19,8 +19,8 @@ public class RecipesController : ControllerBase
         _recipesRepository = recipesRepository;
     }
 
-    [HttpGet("email")]
-    public async Task<ActionResult<List<RecipeDto>>> Get(string email)
+    [HttpGet("{email}")]
+    public async Task<ActionResult<List<RecipeDto>>> Get([FromRoute] string email)
     {
         var recipes = await _recipesClient.GetRecipes();
         var userProducts = await _userRepository.GetUserProducts(email);
