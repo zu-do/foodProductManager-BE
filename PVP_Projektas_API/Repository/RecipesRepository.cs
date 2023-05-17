@@ -31,12 +31,12 @@ public class RecipesRepository : IRecipesRepository
                 }
             }
 
-            if (CountExisting(products) == recipe.Ingredients.Count)
+            if (CountExisting(products, recipe) >= recipe.Ingredients.Count)
             {
                 RecipeDto dto = new RecipeDto { Recipe = recipe };
                 fitRecipes.Add(dto);
             }
-            else if (CountExisting(products) + 1 == recipe.Ingredients.Count) // 1 products is missing to a recipe
+            else if (CountExisting(products, recipe) + 1 == recipe.Ingredients.Count) // 1 products is missing to a recipe
             {
                 double distance = 5;
                 Product fititngProductInGiveAway = new Product();
@@ -97,19 +97,38 @@ public class RecipesRepository : IRecipesRepository
         return false;
     }
 
-    private int CountExisting(List<Product> products)
-    {
-        int fiting = 0;
+    //private int CountExisting(List<Product> products)
+    //{
+    //    int fiting = 0;
 
-        foreach (var product in products)
+    //    foreach (var product in products)
+    //    {
+    //        if (product.ExistsInRecipe)
+    //        {
+    //            fiting++;
+    //        }
+    //    }
+
+    //    return fiting;
+    //}
+
+    private int CountExisting(List<Product> products, Recipe recipe)
+    {
+        var count = 0;
+
+        foreach(var ingredient in recipe.Ingredients)
         {
-            if (product.ExistsInRecipe)
+            foreach(var product in products)
             {
-                fiting++;
+                if (product.ExistsInRecipe && ingredient.ToLower().Contains(product.ProductName.ToLower()))
+                { 
+                    count++;
+                    break;
+                }
             }
         }
 
-        return fiting;
+        return count;
     }
 
     private async Task<List<Product>> GetProductsForGiveAway()
