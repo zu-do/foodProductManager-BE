@@ -61,12 +61,16 @@ namespace PVP_Projektas_API.Controllers
             }
             return null;
         }
+
         [HttpGet("{product}/{category}")]
         public async Task<DateTime?> SuggestDate([FromRoute] string product, [FromRoute] string category)
         {
             var suggestedDate = await _productRepository.SuggestDate(product, category);
             return suggestedDate;
         }
+
+        [HttpPut("giveaway/{id}/{addressId}")]
+        public async Task<Product?> ChangeState([FromRoute] int id, [FromRoute] int addressId) => await _productRepository.ChangeState(id, addressId);
     }
      public class UserProductsRequest
     {
