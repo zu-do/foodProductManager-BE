@@ -97,21 +97,6 @@ public class RecipesRepository : IRecipesRepository
         return false;
     }
 
-    //private int CountExisting(List<Product> products)
-    //{
-    //    int fiting = 0;
-
-    //    foreach (var product in products)
-    //    {
-    //        if (product.ExistsInRecipe)
-    //        {
-    //            fiting++;
-    //        }
-    //    }
-
-    //    return fiting;
-    //}
-
     private int CountExisting(List<Product> products, Recipe recipe)
     {
         var count = 0;
