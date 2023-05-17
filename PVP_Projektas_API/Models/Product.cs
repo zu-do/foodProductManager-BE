@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace PVP_Projektas_API.Models;
@@ -36,6 +37,8 @@ public class Product
             return (int)timeRemaining.TotalDays;
         }
     }
+    [NotMapped]
+    public bool ExistsInRecipe { get; set; }
 }
 public class UnitType
 {
