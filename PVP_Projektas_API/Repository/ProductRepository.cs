@@ -237,5 +237,18 @@ namespace PVP_Projektas_API.Repository
             DateTime suggestedDate = DateTime.Today.AddDays(average);
             return suggestedDate;
         }
+        public async Task<Product> ChangeState(int id, int addressId)
+        {
+            var product = await _dbContext.DbProducts.Where(p => p.Id == id).FirstOrDefaultAsync();
+            var address = await _dbContext.DbAddresses.Include(c => c.Products).SingleOrDefaultAsync(c => c.Id == addressId);
+
+            if (address == null) return null;
+
+            product.AddressId = addressId;
+            product.Givable = true;
+
+            await _dbContext.SaveChangesAsync();
+            return product;
+        }
     }
 }
