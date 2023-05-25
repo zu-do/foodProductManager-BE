@@ -32,4 +32,16 @@ public class RecipesController : ControllerBase
         }
         return NotFound();
     }
+
+    [HttpGet("v2/{email}")]
+    public async Task<ActionResult<List<Recipe>>> GetV2([FromRoute] string email)
+    {
+        var fitRecipes = await _recipesRepository.RecommendRecipesV2(email);
+
+        if (fitRecipes is not null)
+        {
+            return Ok(fitRecipes);
+        }
+        return NotFound();
+    }
 }
