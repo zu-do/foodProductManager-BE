@@ -1,4 +1,5 @@
-﻿using PVP_Projektas_API.Interfaces;
+﻿using Org.BouncyCastle.Pkcs;
+using PVP_Projektas_API.Interfaces;
 using PVP_Projektas_API.Models;
 
 namespace PVP_Projektas_API.Repository;
@@ -8,12 +9,18 @@ public class RecipesRepository : IRecipesRepository
     private readonly IProductRepository _productsRepository;
     private readonly IDistanceClient _distanceClient;
     private readonly IUserRepository _userRepository;
+    private readonly ITranslationClient _translationClient;
+    private readonly IRecipesClient _recipesClient;
+    private readonly ITranslationService _translationService;
 
-    public RecipesRepository(IProductRepository productsRepository, IDistanceClient distanceClient, IUserRepository userRepository)
+    public RecipesRepository(IProductRepository productsRepository, IDistanceClient distanceClient, IUserRepository userRepository, ITranslationClient translationClient, IRecipesClient recipesClient, ITranslationService translationService)
     {
         _productsRepository = productsRepository;
         _distanceClient = distanceClient;
         _userRepository = userRepository;
+        _translationClient = translationClient;
+        _recipesClient = recipesClient;
+        _translationService = translationService;
     }
     public async Task<List<RecipeDto>> RecommendRecipes(List<Recipe> recipes, List<Product> products, string email)
     {
@@ -83,6 +90,59 @@ public class RecipesRepository : IRecipesRepository
         }
 
         return fitRecipes;
+    }
+
+
+    public async Task<List<Recipe>> RecommendRecipesV2(string email)
+    {
+        List<Recipe> recipes = new List<Recipe>();
+
+        string productsCSV = await GenerateProductsCSV(email);
+
+        var enProductsCsv = await _translationClient.GetTranslationFromLtToEn(productsCSV);
+
+        var productNames = enProductsCsv.Split(";").ToList();
+
+        var productNamesLower = productNames.Select(p => p.ToLower()).ToList();
+
+        var distinctProductNames = productNamesLower.Distinct().ToList();
+
+        foreach(var productName in distinctProductNames)
+        {
+            var apiRecipes = await _recipesClient.GetRecipesV2(productName);
+            if (apiRecipes is not null)
+            {
+                recipes.AddRange(apiRecipes);
+            }
+        }
+
+        string enProductNames = string.Empty;
+
+        //recipes = await _translationService.TranslateRecipes(recipes);
+        //upgrade this shit
+
+        return recipes;
+    }
+
+    private async Task<string> GenerateProductsCSV(string email)
+    {
+        var productsCSV = string.Empty;
+
+        var products = await _productsRepository.GetUserProducts(email);
+
+        for (int i = 0; i < products.Count; i++)
+        {
+            if (i < products.Count - 1)
+            {
+                productsCSV = productsCSV + products[i].ProductName + ";";
+            }
+            else
+            {
+                productsCSV = productsCSV + products[i].ProductName;
+            }
+        }
+
+        return productsCSV;
     }
     private bool CheckIfProductContainedInRecipe(List<string> ingredients, string product)
     {

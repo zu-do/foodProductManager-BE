@@ -22,7 +22,8 @@ builder.Services.AddTransient<IReservationRepository, ReservationRepository>();
 builder.Services.AddTransient<IRecipesRepository, RecipesRepository>();
 builder.Services.AddTransient<IMailService, MailService>();
 builder.Services.AddTransient<IDistanceClient, DistanceClient>();
-
+builder.Services.AddTransient<ITranslationClient, TranslationClient>();
+builder.Services.AddTransient<ITranslationService, TranslationService>();
 
 builder.Services.AddHttpClient<IOpenFoodsClient, OpenFoodsClient>();
 builder.Services.AddHttpClient<IRecipesClient, RecipesClient>();
